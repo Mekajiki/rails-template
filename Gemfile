@@ -7,8 +7,7 @@ ruby "2.6.6"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.0.3"
 
-# TODO(shouichi): 復活させる https://github.com/anipos/zoo/issues/227.
-# gem "secure_headers"
+gem "secure_headers"
 
 # Use PostgreSQL as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
@@ -30,11 +29,6 @@ gem "slim-rails"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.10"
-
-# TODO
-# gem "lograge"
-# TODO
-# gem "ougai"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger

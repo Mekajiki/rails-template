@@ -20,6 +20,12 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("PG_HOST") { "pg" } %>
+  username: postgres
+  password: notasecret
+  # Defaultのen_US.utf8だとsortの順番がおかしいのでC.UTF-8に変更。
+  collation: C.UTF-8
+  template: template0
 
 development:
   <<: *default
@@ -79,7 +85,8 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: app_production
-  username: app
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+  url: <%= ENV["DATABASE_URL"] %>
+  connect_timeout: 1
+  checkout_timeout: 1
+  variables:
+    statement_timeout: <%= ENV["STATEMENT_TIMEOUT"] || "5s" %>
