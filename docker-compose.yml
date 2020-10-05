@@ -1,0 +1,82 @@
+version: '3.7'
+
+x-rails: &rails
+  build:
+    context: .
+    dockerfile: Dockerfile.dev
+  volumes:
+    - ./:/app
+    # bundle/yarn installの結果はvolumeに保存しておく事で2回目以降のinstallが速
+    # くなる。
+    - bundler_volume:/usr/local/bundle
+    - node_modules_volume:/app/node_modules
+    - yarn_volume:/usr/local/share/.cache/yarn
+
+services:
+  # XXX: 初回は起動に失敗する。起動の度にbundle/yarn installが走るので、それら
+  # の完了を待ってから全体を再起動すれば2回目以降は起動する。本来はinstallが終
+  # わった後にserverを起動したいが簡単に待つ方法がない。
+  server:
+    <<: *rails
+    command:
+      - bundle
+      - exec
+      - rails
+      - server
+      - -b
+      - 0.0.0.0
+    ports:
+      - 3000:3000
+    # binding.pry出来る様にする。
+    tty: true
+    stdin_open: true
+
+  pg:
+    image: postgres:11
+    volumes:
+      - pg_volume:/var/lib/postgresql/data
+      # ホストとデータのやり取り向け。
+      - ./:/data
+    environment:
+      - POSTGRES_PASSWORD=notasecret
+
+  webpacker:
+    <<: *rails
+    command:
+      - ./bin/webpack-dev-server
+    ports:
+      - 3035:3035
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+
+  spring:
+    <<: *rails
+    command:
+      - bundle
+      - exec
+      - spring
+      - server
+
+  # RailsのSystem Specで使う
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - 4444:4444
+
+  bundler:
+    <<: *rails
+    command:
+      - bundle
+      - install
+
+  yarn:
+    <<: *rails
+    command:
+      - yarn
+      - install
+
+volumes:
+  pg_volume:
+  bundler_volume:
+  yarn_volume:
+  node_modules_volume:
