@@ -27,10 +27,8 @@ psql:
 rspec:
 	$(.RUN_CONTEXT) spring rspec
 
-# root以下を対象にすると非常に遅い（node_modulesが原因？）。頻繁に編集する部分
-# だけ対象にする。CIではroot以下全部が対象にはなってる。
 rubocop:
-	$(.RUN_CONTEXT) bundle exec rubocop --auto-correct app config db spec
+	$(.RUN_CONTEXT) bundle exec rubocop --auto-correct
 
 brakeman:
 	$(.RUN_CONTEXT) bundle exec brakeman
