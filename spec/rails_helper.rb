@@ -78,9 +78,6 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  # Request specでdeviseのhelperが使える様にする。
-  config.include Devise::Test::IntegrationHelpers, type: :request
-
   # Job specでActiveJob::TestHelperが使えるようにする。
   config.include ActiveJob::TestHelper, type: :job
 end
