@@ -1,6 +1,6 @@
 .RUN_CONTEXT = docker-compose exec spring
 
-pre-push: slim-lint factory-bot-lint rubocop breakman rspec
+pre-push: slim-lint factory-bot-lint rubocop brakeman rspec
 
 up:
 	docker-compose up -d
