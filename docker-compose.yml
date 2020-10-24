@@ -11,6 +11,7 @@ x-rails: &rails
     - bundler_volume:/usr/local/bundle
     - node_modules_volume:/app/node_modules
     - yarn_volume:/usr/local/share/.cache/yarn
+  env_file: local.env
 
 services:
   # XXX: 初回は起動に失敗する。起動の度にbundle/yarn installが走るので、それら
