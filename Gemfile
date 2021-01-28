@@ -14,7 +14,7 @@ gem "pg", ">= 0.18", "< 2.0"
 gem "strong_migrations"
 
 # Use Puma as the app server
-gem "puma", "~> 5.1"
+gem "puma", "~> 5.2"
 
 # Use SCSS for stylesheets
 gem "sass-rails", "~> 6"
